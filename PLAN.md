@@ -16,7 +16,7 @@
 - [ ] Create the Developer ID Application certificate (Ivan, in Xcode)
 - [ ] Store notary credentials as the `coffee-cup-notary` keychain profile (Ivan)
 - [ ] `make release` and confirm `spctl` accepts the DMG
-- [ ] Create the public GitHub repo `mrivanlizarde/coffee-cup` and push
+- [x] Create the public GitHub repo `mrivanlizarde/coffee-cup` and push (2026-09-08)
 - [ ] Create a GitHub release for v1.0.0 with the DMG attached
 - [ ] Create `mrivanlizarde/homebrew-tap`, copy `Casks/coffee-cup.rb` in with
       the real sha256 (printed at the end of `make notarize`)
