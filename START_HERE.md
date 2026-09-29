@@ -23,6 +23,20 @@ That builds a universal binary, wraps it in `build/Coffee Cup.app`, signs it
 ad-hoc (valid on this Mac only), and opens it. A grey cup appears in the menu
 bar.
 
+## Installing it on a new Mac
+
+`make dev` runs the app from `build/`, which is not an install. On 2026-09-29 the move to a
+new Mac showed the cost: Coffee Cup had only ever lived in `build/`, so Migration Assistant
+had nothing in Applications to carry, and the cup was simply gone. Install it properly:
+
+```bash
+cd ~/Code/coffee-cup && make app && codesign --force --options runtime --sign "Apple Development" --entitlements Resources/CoffeeCup.entitlements "build/Coffee Cup.app" && ditto "build/Coffee Cup.app" "/Applications/Coffee Cup.app" && open "/Applications/Coffee Cup.app"
+```
+
+Then right-click the cup and turn on **Launch at Login**. Launch at Login registers the
+app's *path*, so it has to point at `/Applications` and not at `build/`, which the next
+`make` deletes.
+
 ## How to verify it (reading the code is not verification)
 
 1. **Look at the menu bar.** Grey cup and saucer, dimmed. Left-click it. It
