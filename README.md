@@ -10,18 +10,18 @@ Terminal, and stops it when you click again or quit.
 
 ## Install
 
-1. Download `CoffeeCup-x.y.z.dmg` from the
-   [latest release](https://github.com/mrivanlizarde/coffee-cup/releases/latest).
-2. Open it and drag **Coffee Cup** into **Applications**.
-3. Launch it. A grey cup appears at the right side of your menu bar.
-
-The app is signed and notarized with Apple, so it opens without any warnings.
-
-Homebrew users:
+Coffee Cup isn't notarized by Apple, so there's no download yet. You build it
+yourself in about a minute. You need macOS 14 or later and Apple's command line
+tools (run `xcode-select --install` once if you've never built anything).
 
 ```bash
-brew install --cask mrivanlizarde/tap/coffee-cup
+git clone https://github.com/mrivanlizarde/coffee-cup.git
+cd coffee-cup
+make install
 ```
+
+That builds it, signs it for your own Mac, copies it into **Applications**, and
+opens it. A grey cup appears at the right side of your menu bar.
 
 ## Use
 
@@ -51,16 +51,10 @@ These are limits of macOS and the `caffeinate` command itself, not bugs.
 
 macOS 14 Sonoma or later. Universal binary for Apple Silicon and Intel.
 
-## Build it yourself
+## Tip jar
 
-```bash
-git clone https://github.com/mrivanlizarde/coffee-cup.git
-cd coffee-cup
-make dev
-```
-
-`make dev` builds, signs the app for your own Mac only, and launches it. See
-[START_HERE.md](START_HERE.md) for the release pipeline.
+Coffee Cup is free and stays free. If it kept your Mac awake through something
+that mattered, you can buy me a coffee: [buymeacoffee.com/mrivanlizarde](https://buymeacoffee.com/mrivanlizarde).
 
 ## License
 

@@ -2,6 +2,19 @@
 
 Newest first. One entry per working session. The *why* is the point.
 
+## 2026-10-15: honest install, and a tip jar
+
+The README promised a notarized DMG, a GitHub release and a Homebrew tap. None of them
+existed, so anyone who found the repo hit a dead link on step one. Ivan chose honesty
+over notarizing: the install section now says to build from source, through a new
+`make install` that ad-hoc signs and copies the app into /Applications. It has to live
+there because Launch at Login records the app's path, which is the bug the M5 move
+exposed. The release pipeline stays in the Makefile for the day it is notarized.
+
+Added a tip jar (buymeacoffee.com/mrivanlizarde) to the README and `.github/FUNDING.yml`.
+Coffee Cup stays free under MIT. Free alternatives already cover this ground
+(Amphetamine, KeepingYouAwake), so a price was never realistic; a tip is.
+
 ## 2026-09-08 — published to GitHub
 
 Repo created public at https://github.com/mrivanlizarde/coffee-cup and pushed.

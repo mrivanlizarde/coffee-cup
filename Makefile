@@ -1,6 +1,7 @@
 # Coffee Cup build pipeline.
 #
 #   make dev        build, ad-hoc sign, and open the app (local testing)
+#   make install    build, ad-hoc sign, copy to /Applications, and open it
 #   make app        build a universal, unsigned .app in build/
 #   make release    app + Developer ID sign + DMG + notarize + staple → dist/
 #
@@ -25,7 +26,7 @@ DMG       := $(DIST_DIR)/CoffeeCup-$(VERSION).dmg
 ICONSET   := $(BUILD_DIR)/AppIcon.iconset
 ICNS      := $(BUILD_DIR)/AppIcon.icns
 
-.PHONY: all dev app run binary icon sign dmg notarize release clean verify
+.PHONY: all dev install app run binary icon sign dmg notarize release clean verify
 
 all: app
 
@@ -54,6 +55,13 @@ dev: app
 	open "$(APP)"
 
 run: dev
+
+# Install for your own Mac. Launch at Login records the app's path, so it must live in
+# /Applications, not build/ (which a new Mac or `make clean` wipes).
+install: app
+	codesign --force --deep --sign - "$(APP)"
+	ditto "$(APP)" "/Applications/$(APP_NAME).app"
+	open "/Applications/$(APP_NAME).app"
 
 sign: app
 	codesign --force --options runtime --timestamp \
