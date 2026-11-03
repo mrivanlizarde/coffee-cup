@@ -74,7 +74,7 @@ attach the DMG. Bump `VERSION` in the Makefile first.
 Both of these need Ivan's Apple ID and cannot be scripted.
 
 1. **Developer ID Application certificate.** Xcode → Settings → Accounts →
-   select the team (K55TBYNKUC) → Manage Certificates → **+** →
+   select the team **Ivan Lizarde (LD587PB2H8)** → Manage Certificates → **+** →
    Developer ID Application. Check with:
    ```bash
    security find-identity -v -p codesigning | grep "Developer ID Application"
@@ -82,10 +82,18 @@ Both of these need Ivan's Apple ID and cannot be scripted.
 2. **Notary credentials in the keychain.** Generate an app-specific password at
    appleid.apple.com, then:
    ```bash
-   xcrun notarytool store-credentials coffee-cup-notary --apple-id ivan@dvlpmnt.studio --team-id K55TBYNKUC
+   xcrun notarytool store-credentials coffee-cup-notary --apple-id ilizarde@mac.com --team-id LD587PB2H8
    ```
    It prompts for the app-specific password and stores it in the login
    keychain under the profile name the Makefile expects.
+
+   **The team is `LD587PB2H8`, not `K55TBYNKUC`.** Checked 2026-11-03 against the
+   certificate itself (`OU=LD587PB2H8, O=Ivan Lizarde`) and Xcode's account list,
+   which says the team is a paid Individual membership. `K55TBYNKUC` in the
+   certificate's name is the developer's user id, which is what an individual
+   account prints there. The Apple ID on the certificate is `ilizarde@mac.com`.
+   An earlier version of this file had both wrong, and `notarytool` with the wrong
+   team id fails with an unhelpful "invalid credentials".
 
 ## Rules of engagement
 

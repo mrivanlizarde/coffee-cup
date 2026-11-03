@@ -2,6 +2,22 @@
 
 Newest first. One entry per working session. The *why* is the point.
 
+## 2026-11-03 — Release prerequisites checked; team id corrected
+
+**Why.** Jacob Patrick asked Ivan for "that code thing you use so the computer doesn't sleep
+while it's transferring footage." Ivan wants to send him Coffee Cup as a normal download, no
+Xcode on Jacob's side. That is exactly the notarized DMG `make release` was built to produce.
+
+**What.** Rebuilt `make app` on Xcode 27.2 / macOS 27.2: compiles, universal (arm64 + x86_64),
+ad-hoc signature valid. Confirmed what is missing: a Developer ID Application certificate
+(only an Apple Development one is in the keychain) and the `coffee-cup-notary` keychain
+profile. Confirmed the account can issue one: Xcode lists team `LD587PB2H8` "Ivan Lizarde"
+as a paid Individual membership. `START_HERE.md` had the team as `K55TBYNKUC` (the user id
+printed in the certificate name) and the Apple ID as the work address; both corrected so the
+notarytool line works first time.
+
+**Not done.** The two one-time steps still need Ivan's Apple ID and his hands. No release yet.
+
 ## 2026-10-15: honest install, and a tip jar
 
 The README promised a notarized DMG, a GitHub release and a Homebrew tap. None of them
