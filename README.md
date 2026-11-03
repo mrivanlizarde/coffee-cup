@@ -10,18 +10,22 @@ Terminal, and stops it when you click again or quit.
 
 ## Install
 
-Coffee Cup isn't notarized by Apple, so there's no download yet. You build it
-yourself in about a minute. You need macOS 14 or later and Apple's command line
-tools (run `xcode-select --install` once if you've never built anything).
+[Download Coffee Cup](https://github.com/mrivanlizarde/coffee-cup/releases/latest/download/CoffeeCup-1.0.0.dmg),
+open the DMG, and drag the cup into **Applications**. Open it once from there and a
+grey cup appears at the right side of your menu bar. Right-click it and turn on
+**Launch at Login** if you want it there every day.
+
+It is signed with an Apple Developer ID and notarized by Apple, so it opens like
+any other Mac app. Needs macOS 14 or later.
+
+Prefer to build it yourself? You need Apple's command line tools (run
+`xcode-select --install` once if you've never built anything):
 
 ```bash
 git clone https://github.com/mrivanlizarde/coffee-cup.git
 cd coffee-cup
 make install
 ```
-
-That builds it, signs it for your own Mac, copies it into **Applications**, and
-opens it. A grey cup appears at the right side of your menu bar.
 
 ## Use
 

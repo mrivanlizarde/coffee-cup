@@ -3,7 +3,7 @@
 #   make dev        build, ad-hoc sign, and open the app (local testing)
 #   make install    build, ad-hoc sign, copy to /Applications, and open it
 #   make app        build a universal, unsigned .app in build/
-#   make release    app + Developer ID sign + DMG + notarize + staple → dist/
+#   make release    app + Developer ID sign + notarize app + DMG + notarize DMG → dist/
 #
 # Release needs two one-time setups on this Mac (see START_HERE.md):
 #   1. A "Developer ID Application" certificate in the login keychain.
@@ -26,7 +26,7 @@ DMG       := $(DIST_DIR)/CoffeeCup-$(VERSION).dmg
 ICONSET   := $(BUILD_DIR)/AppIcon.iconset
 ICNS      := $(BUILD_DIR)/AppIcon.icns
 
-.PHONY: all dev install app run binary icon sign dmg notarize release clean verify
+.PHONY: all dev install app run binary icon sign notarize-app dmg notarize release clean verify
 
 all: app
 
@@ -69,7 +69,17 @@ sign: app
 	    --sign "$(SIGN_IDENTITY)" "$(APP)"
 	codesign --verify --deep --strict --verbose=2 "$(APP)"
 
-dmg: sign
+# Notarize and staple the .app itself before it goes into the DMG. Without this the
+# app that lands in /Applications has no ticket of its own, and Gatekeeper must reach
+# Apple on first launch (found on the first release, 2026-11-03: the DMG passed, the
+# app inside said "does not have a ticket stapled to it").
+notarize-app: sign
+	rm -f "$(BUILD_DIR)/$(EXEC).zip"
+	ditto -c -k --keepParent "$(APP)" "$(BUILD_DIR)/$(EXEC).zip"
+	xcrun notarytool submit "$(BUILD_DIR)/$(EXEC).zip" --keychain-profile "$(NOTARY_PROFILE)" --wait
+	xcrun stapler staple "$(APP)"
+
+dmg: notarize-app
 	mkdir -p "$(DIST_DIR)" "$(BUILD_DIR)/dmg"
 	rm -rf "$(BUILD_DIR)/dmg"/* "$(DMG)"
 	cp -R "$(APP)" "$(BUILD_DIR)/dmg/"

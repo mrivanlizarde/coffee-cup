@@ -2,6 +2,29 @@
 
 Newest first. One entry per working session. The *why* is the point.
 
+## 2026-11-03 (later) — First real release: v1.0.0, signed, notarized, downloadable
+
+**Why.** Jacob Patrick asked for the no-sleep trick for footage transfers, and Ivan wanted
+him to install Coffee Cup like any normal app. That needs Apple's notarization, which this
+project had skipped on 2026-10-15 because nobody had asked for a download.
+
+**What happened.** Xcode refused to create the Developer ID certificate ("only the Account
+Holder", to the Account Holder). Ivan made it on the web from a CSR Sonny generated; the key
+and certificate were imported into the login keychain and the key file deleted. The
+app-specific password path to notarytool failed twice with 401 on a correct password; an App
+Store Connect API key validated first time, so START_HERE now prescribes the key. The first
+DMG passed notarization but the app inside it had no stapled ticket, so `make release` gained
+a `notarize-app` stage (zip, notarize, staple the .app) before the DMG is built; the DMG was
+re-cut and re-notarized and the release asset replaced within minutes of the first upload.
+
+**Verified.** Apple: Accepted, twice (app zip and DMG). Stapler validates both the DMG and the
+app inside the mounted image. `spctl` on the mounted app: "accepted, source=Notarized Developer
+ID". The GitHub asset downloaded back and matched the sha256 of the file Apple accepted:
+`06e0430c…93bbd`. README now leads with the download; the cask carries the sha.
+
+**Not done.** The Homebrew tap repo (`mrivanlizarde/homebrew-tap`) does not exist, so
+`brew install` is still not a thing; the cask file is ready for it.
+
 ## 2026-11-03 — Release prerequisites checked; team id corrected
 
 **Why.** Jacob Patrick asked Ivan for "that code thing you use so the computer doesn't sleep

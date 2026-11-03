@@ -75,17 +75,30 @@ Both of these need Ivan's Apple ID and cannot be scripted.
 
 1. **Developer ID Application certificate.** Xcode → Settings → Accounts →
    select the team **Ivan Lizarde (LD587PB2H8)** → Manage Certificates → **+** →
-   Developer ID Application. Check with:
+   Developer ID Application. **On 2026-11-03 Xcode refused with "This operation can
+   only be performed by the Account Holder"** although ilizarde@mac.com is the Account
+   Holder. The way round it: make a CSR with `openssl req -new -newkey rsa:2048 -nodes
+   -keyout developerid.key -out developerid.csr -subj "/emailAddress=ilizarde@mac.com/CN=Ivan
+   Lizarde/C=US"` outside the repo, upload it at
+   developer.apple.com/account/resources/certificates/add (Developer ID Application),
+   download the `.cer`, then `security import` the key and the cer into the login
+   keychain and delete the key file. The current certificate expires 2027-12-03. Check with:
    ```bash
    security find-identity -v -p codesigning | grep "Developer ID Application"
    ```
-2. **Notary credentials in the keychain.** Generate an app-specific password at
-   appleid.apple.com, then:
+2. **Notary credentials in the keychain.** Use an App Store Connect API key, not an
+   app-specific password. App Store Connect → Users and Access → Integrations → App
+   Store Connect API → Team Keys → + (access: Developer) → download the `.p8` once.
+   Then:
    ```bash
-   xcrun notarytool store-credentials coffee-cup-notary --apple-id ilizarde@mac.com --team-id LD587PB2H8
+   cd ~/Code/coffee-cup && xcrun notarytool store-credentials coffee-cup-notary --key ~/.private_keys/AuthKey_<KEYID>.p8 --key-id <KEYID> --issuer <ISSUER ID from that page>
    ```
-   It prompts for the app-specific password and stores it in the login
-   keychain under the profile name the Makefile expects.
+   The key file lives in `~/.private_keys/` (mode 600), never in this repo.
+
+   **Why not the app-specific password.** 2026-11-03: two attempts with a correct,
+   freshly made app-specific password for ilizarde@mac.com returned
+   `HTTP 401 Invalid credentials`. The API key validated first time. Do not send
+   Ivan back to that prompt.
 
    **The team is `LD587PB2H8`, not `K55TBYNKUC`.** Checked 2026-11-03 against the
    certificate itself (`OU=LD587PB2H8, O=Ivan Lizarde`) and Xcode's account list,
